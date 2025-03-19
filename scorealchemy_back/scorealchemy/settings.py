@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'predictions',
     'analytics',
     'users',
+    'coaches',
+    'competitions',
 ]
 
 MIDDLEWARE = [
