@@ -4,4 +4,4 @@ from .models import Continent
 class ContinentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Continent
-        fields = ['id', 'name']
+        fields = '__all__'
