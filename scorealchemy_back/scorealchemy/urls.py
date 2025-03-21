@@ -29,6 +29,7 @@ router.registry.extend(locations_router.registry) # adds all the urls from locat
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
     #path('api/', include('locations.urls') )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

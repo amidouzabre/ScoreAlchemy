@@ -63,9 +63,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # serializers and rest framework
     'rest_framework',
     'django_filters',
-    #'rest_framework.authtoken',
+
+
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+
+
     #'rest_framework_simplejwt',
     #'allauth',
     
