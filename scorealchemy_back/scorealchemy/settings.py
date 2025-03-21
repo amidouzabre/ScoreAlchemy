@@ -54,11 +54,16 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS512',
 }
 
+REST_USE_JWT = True  # If you want to use JWT authentication
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = None
+
+#ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*',]  # Include mandatory signup fields
+#ACCOUNT_USERNAME_REQUIRED = False
+#ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+#ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'  # Adapter for customizing user flow
 
 
 
@@ -70,22 +75,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # serializers and rest framework
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'django_filters',
     
-    # cors headers : allows us to make requests from our react app to our django app
-    'corsheaders',
+   
 
-    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',#
+    #'allauth.socialaccount',
+
     'dj_rest_auth',
+    #'dj_rest_auth.registration',#
 
 
-    #'rest_framework_simplejwt',
-    #'allauth',
-    
-  
+     # cors headers : allows us to make requests from our react app to our django app
+    'corsheaders',
 
     'teams',
     'players',
@@ -107,10 +116,22 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    
+}
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:3000",
+]
+
+CORS_ALLOWED_ALL_ORIGINS = True
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_HTTPONLY': False,
 }
 
 
@@ -123,6 +144,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',#
 ]
 
 ROOT_URLCONF = 'scorealchemy.urls'
@@ -192,6 +214,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -200,10 +224,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:3000",
-]
-
-CORS_ALLOWED_ALL_ORIGINS = True

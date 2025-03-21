@@ -31,5 +31,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('dj-rest-auth/', include('dj_rest_auth.urls')), # Session Authentication for login and logout
+    #path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')), 
+    #path('api/auth/', include('users.urls')),
     #path('api/', include('locations.urls') )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

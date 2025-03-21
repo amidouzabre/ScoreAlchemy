@@ -9,7 +9,7 @@ from .serializers import ContinentSerializer
 class ContinentViewSet(viewsets.ModelViewSet):
     queryset = Continent.objects.all()
     serializer_class = ContinentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,]
     filterset_fields = ['name',]
     search_fields = ['name',]
 
