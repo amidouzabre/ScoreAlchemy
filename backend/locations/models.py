@@ -12,5 +12,8 @@ class Country(models.Model):
     name = models.CharField(max_length=100, unique=True)
     continent = models.ForeignKey(Continent, related_name="countries", on_delete=models.CASCADE)
 
+    class Meta:
+        db_table = "countries"
+
     def __str__(self):
         return self.name
