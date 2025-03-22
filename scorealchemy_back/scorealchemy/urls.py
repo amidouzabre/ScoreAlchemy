@@ -24,6 +24,7 @@ from rest_framework import routers
 
 from locations.urls import router as locations_router
 
+
 router = routers.DefaultRouter()
 router.registry.extend(locations_router.registry) # adds all the urls from locations.urls.py
 
