@@ -1,1 +1,8 @@
 Django
+djangorestframework 
+djangorestframework-simplejwt 
+dj-rest-auth 
+django-allauth
+requests
+cryptography
+rest_framework_simplejwt

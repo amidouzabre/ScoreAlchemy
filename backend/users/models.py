@@ -10,6 +10,9 @@ class CustomUserManager(UserManager):
         if not email:
             raise ValueError("L'adresse email doit être renseignée")
         email = self.normalize_email(email)
+        # Créer automatiquement un username s'il n'est pas fourni (optionnel)
+        if "username" not in extra_fields or not extra_fields["username"]:
+            extra_fields["username"] = email.split("@")[0]
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -22,6 +25,7 @@ class CustomUserManager(UserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
@@ -30,7 +34,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []  # Le champs email est déjà requis
+    # Si vous souhaitez quand même recueillir le username lors de l'inscription, vous le rendez obligatoire ici.
+    REQUIRED_FIELDS = ['username']
 
     objects = CustomUserManager()
 
