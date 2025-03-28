@@ -1,12 +1,13 @@
 // utils/api.ts
 
 export interface SignUpData {
+    username: string;
     email: string;
     password: string;
     //re_password: string;
   }
   
-export async function signUp(data: SignUpData): Promise<{ id: number; email: string }> {
+export async function signUp(data: SignUpData): Promise<{username: string, email: string, password: string }> {
     const res = await fetch("http://localhost:8000/auth/users/", {
       method: "POST",
       headers: { 
