@@ -18,7 +18,7 @@ export default NextAuth({
           async authorize(credentials, req) {
             console.log(req);
             // Appel à l'endpoint Django pour obtenir { access, refresh }
-            const res = await fetch("http://localhost:8000/auth/jwt/create/", {
+            const res = await fetch("http://localhost:8000/auth/login/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -41,5 +41,14 @@ export default NextAuth({
             }
           }
         })
-      ]
+      ],
+      callbacks: {
+        async jwt({ token, user }) {
+          return { ...token, ...user };
+        },
+        async session({ session, token }) {
+          session.user = token;
+          return session;
+        },
+      },
 })

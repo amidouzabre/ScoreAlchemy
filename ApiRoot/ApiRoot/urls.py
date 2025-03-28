@@ -17,11 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from authapp.views import LogoutView
+from rest_framework_simplejwt.views import TokenObtainPairView
+from authapp.views import LogoutView, CustomTokenObtainPairView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("auth/", include("djoser.urls")),
+    #path("auth/", include("djoser.urls.authtoken")),
     path("auth/", include("djoser.urls.jwt")),
     path("auth/logout/", LogoutView.as_view()),
+
+    # Alias /auth/login/ to your token obtain view
+    path('auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]

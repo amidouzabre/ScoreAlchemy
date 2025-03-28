@@ -9,6 +9,9 @@ from rest_framework.response import Response
 
 from django.core.exceptions import ObjectDoesNotExist
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
+
 
 class LogoutView(APIView):
     permission_classes = (AllowAny,)
@@ -22,3 +25,10 @@ class LogoutView(APIView):
             return Response(status=status.HTTP_200_OK)
         except (ObjectDoesNotExist, TokenError):
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

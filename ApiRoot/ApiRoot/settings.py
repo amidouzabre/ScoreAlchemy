@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Installed apps
     'authapp',
     'rest_framework',
+    'rest_framework.authtoken',
     "djoser",
     "rest_framework_simplejwt", #new
     "rest_framework_simplejwt.token_blacklist",
@@ -66,11 +67,14 @@ DJOSER = {
     "ACTIVATION_URL": "#/activate/{uid}/{token}",
     "SEND_ACTIVATION_EMAIL": False,
     "SERIALIZERS": {
-        'user_create': 'authapp.serializers.CustomUserCreateSerializer',
         'user': 'authapp.serializers.CustomUserSerializer',
+        'user_create': 'authapp.serializers.CustomUserCreateSerializer',
+        # Serializer for token creation (login)
+        'token_create': 'authapp.serializers.CustomTokenObtainPairSerializer',
         'current_user': 'authapp.serializers.CustomUserSerializer' # new
     },
     "LOGIN_FIELD": "email",
+    'USER_ID_FIELD': 'id',
 }
 
 SITE_NAME = "Test Django Next.js"

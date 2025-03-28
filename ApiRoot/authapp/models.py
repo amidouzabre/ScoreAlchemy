@@ -34,7 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, blank=True, null=True)
     firstname = models.CharField(max_length=30, blank=True)
     lastname = models.CharField(max_length=30, blank=True)
-    avatar = models.ImageField(upload_to='uploads/avatars')
+    avatar = models.ImageField(upload_to='uploads/avatars', blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
