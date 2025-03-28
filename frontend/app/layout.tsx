@@ -32,13 +32,13 @@ export default function RootLayout({
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <Provider>
-        <div className="flex flex-col h-full">
-          <Header />
-          <div className="flex-1 max-w-lg m-auto py-14 w-full">
-            {children}
+          <div className="flex flex-col h-full">
+            <Header />
+            <div className="flex-1 max-w-lg m-auto py-14 w-full">
+              {children}
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
         </Provider>
       </ThemeProvider>
     </body>

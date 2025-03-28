@@ -15,11 +15,15 @@ const Header = () => {
         <header className='borde-b border-b-accent fixed top-0 bg-background w-full'>
             <div className='container flex items-center py-2 max-w-lg m-auto gap-1'>
                 <h2 className='text-2xl font-bold mr-auto'>DjangoApiNext</h2>
-                {session?.user ? 
-                    (<LogoutButton />) 
-                    //(<Button onClick={() => signOut()}>Sign Out</Button>) 
-                    : 
-                    (<LoginButton />) 
+                {session?.user ? (
+                <>
+                    <p className='text-sky-600'>{session?.user?.username}</p>
+                    <LogoutButton />
+                </>
+                )
+                    : (
+                    <LoginButton />
+                    )
                 }
                 <ThemeToggle/>
             </div>
