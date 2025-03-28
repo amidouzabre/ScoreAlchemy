@@ -74,7 +74,7 @@ export default function LoginPage() {
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Mot de passe</Label>
                 <Link 
-                  href="/forgot-password" 
+                  href="/auth/reset_password" 
                   className="text-sm text-blue-600 hover:text-blue-800"
                 >
                   Mot de passe oublié?
@@ -96,7 +96,7 @@ export default function LoginPage() {
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
             Vous n avez pas de compte?{" "}
-            <Link href="/register" className="text-blue-600 hover:text-blue-800">
+            <Link href="/auth/register" className="text-blue-600 hover:text-blue-800">
               Créer un compte
             </Link>
           </p>
