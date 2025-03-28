@@ -4,7 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/src/theme/ThemeProvider";
 import Header from "@/src/features/layout/Header";
 import { Footer } from "@/src/features/layout/Footer";
-
+import Provider from "./provider";
 
 
 const geistSans = Geist({
@@ -30,12 +30,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-full">
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}>
-      <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-      >
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <Provider>
         <div className="flex flex-col h-full">
           <Header />
           <div className="flex-1 max-w-lg m-auto py-14 w-full">
@@ -43,6 +39,7 @@ export default function RootLayout({
           </div>
           <Footer />
         </div>
+        </Provider>
       </ThemeProvider>
     </body>
   </html>
