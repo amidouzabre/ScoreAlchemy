@@ -35,7 +35,7 @@ export default function LoginPage() {
         return
       }
 
-      router.push("/dashboard")
+      router.push("/")
     } catch (error) {
         console.log(error)
       setError("Une erreur s'est produite. Veuillez réessayer.")
