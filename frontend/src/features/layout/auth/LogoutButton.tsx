@@ -4,16 +4,16 @@ import { LogIn } from 'lucide-react';
 import React, { useTransition } from 'react'
 //import { useRouter } from 'next/navigation';
 import { Loader } from '@/components/ui/loader';
-import { signIn } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 
-export const LoginButton = () => {
+export const LogoutButton = () => {
     const [isPending, startTransition] = useTransition();
     //const router = useRouter();
 
     const handleLogin = () => {
         startTransition(() => {
-            signIn();
+            signOut();
             //router.push('/auth/login');
         })  
         // Rediriger vers la page de connexion
@@ -29,7 +29,7 @@ export const LoginButton = () => {
             ):(
                 <LogIn className='mr-2 h-4 w-4'/>
             )}
-            Login
+            Logout
             
         </Button>
     );
