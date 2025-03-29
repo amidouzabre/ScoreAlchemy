@@ -22,13 +22,21 @@ export default function ForgotPasswordPage() {
 
     try {
       // Ici, vous implémenteriez la logique pour envoyer un email de réinitialisation
-      resetPassword(email)
+      await resetPassword(email)
       
       setIsLoading(false)
       setIsSubmitted(true)
 
     } catch (error) {
-        console.log(error)
+        //console.log(error)
+
+        if (error instanceof SyntaxError && error.message.includes("Unexpected end of JSON input")) {
+          setIsLoading(false)
+          setIsSubmitted(true)
+          return
+        }
+
+
       setError("An error has occurred. Please try again.")
       setIsLoading(false)
     }

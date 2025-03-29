@@ -27,7 +27,7 @@ export default function ResetPasswordConfirmationPage() {
   // Validate that we have the required parameters
   useEffect(() => {
     if (!uid || !token) {
-      setError("Lien de réinitialisation invalide ou expiré.")
+      setError("Invalid or expired reset link.")
     }
   }, [uid, token])
 
@@ -38,14 +38,14 @@ export default function ResetPasswordConfirmationPage() {
     
     // Validate passwords match
     if (newPassword !== confirmPassword) {
-      setError("Les mots de passe ne correspondent pas.")
+      setError("The passwords do not match.")
       setIsLoading(false)
       return
     }
     
     // Validate password length
     if (newPassword.length < 8) {
-      setError("Le mot de passe doit contenir au moins 8 caractères.")
+      setError("Password must contain at least 8 characters.")
       setIsLoading(false)
       return
     }
@@ -74,15 +74,15 @@ export default function ResetPasswordConfirmationPage() {
       }
 
       if(errorData?.token) {
-        setError("Le lien de réinitialisation est invalide ou a expiré.")
+        setError("The reset link is invalid or has expired.")
       } else if (errorData?.new_password) {
-        setError(`Mot de passe : ${errorData?.new_password[0]}`)
+        setError(`Password : ${errorData?.new_password[0]}`)
       } else if (errorData?.uid) {
         setError(`UID : ${errorData?.uid[0]}`)  
     } else if(errorData?.non_field_errors) {
         setError(`Erreur : ${errorData?.non_field_errors[0]}`)
       } else {
-        setError("Une erreur est survenue. Veuillez réessayer plus tard.")
+        setError("An error has occurred. Please try again later.")
       }
     } finally {
       setIsLoading(false)
@@ -93,16 +93,16 @@ export default function ResetPasswordConfirmationPage() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Réinitialiser votre mot de passe</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Reset your password</CardTitle>
           <CardDescription className="text-center">
-            Entrez votre nouveau mot de passe ci-dessous
+          Enter your new password below
           </CardDescription>
         </CardHeader>
         <CardContent>
           {success ? (
             <Alert className="bg-green-50 border-green-200">
               <AlertDescription className="text-green-700">
-                Votre mot de passe a été réinitialisé avec succès. Vous allez être redirigé vers la page de connexion.
+              Your password has been successfully reset. You will be redirected to the login page.
               </AlertDescription>
             </Alert>
           ) : (
@@ -114,7 +114,7 @@ export default function ResetPasswordConfirmationPage() {
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="newPassword">Nouveau mot de passe</Label>
+                <Label htmlFor="newPassword">New password</Label>
                 <Input
                   id="newPassword"
                   type="password"
@@ -126,7 +126,7 @@ export default function ResetPasswordConfirmationPage() {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
+                <Label htmlFor="confirmPassword">Confirm password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -142,16 +142,16 @@ export default function ResetPasswordConfirmationPage() {
                 className="w-full" 
                 disabled={!uid || !token || isLoading}
               >
-                {isLoading ? "Réinitialisation en cours..." : "Réinitialiser le mot de passe"}
+                {isLoading ? "Resetting in progress..." : "Reset password"}
               </Button>
             </form>
           )}
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
-            Retourner à la{" "}
+            Return to a{" "}
             <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
-              page de connexion
+              Login page
             </Link>
           </p>
         </CardFooter>
