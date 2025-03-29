@@ -6,6 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import { Avatar, AvatarImage, AvatarFallback, } from '@/components/ui/avatar';
 import {DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { LoginButton } from './auth/LoginButton';
+import Link from 'next/link';
 //import { Button } from '@/components/ui/button';
 
 const Header = () => {
@@ -14,7 +15,11 @@ const Header = () => {
     return (
         <header className='borde-b border-b-accent fixed top-0 bg-background w-full'>
             <div className='container flex items-center py-2 max-w-lg m-auto gap-1'>
-                <h2 className='text-2xl font-bold mr-auto'>ScoreAlchemy</h2>
+                <h2 className='text-2xl font-bold mr-auto'>
+                    <Link href='/'>
+                        ScoreAlchemy
+                    </Link>
+                </h2>
                 {session?.user ? (
                 <>
                     <DropdownMenu>

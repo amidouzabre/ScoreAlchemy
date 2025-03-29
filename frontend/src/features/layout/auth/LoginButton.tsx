@@ -1,9 +1,9 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import { LogIn } from 'lucide-react';
+//import { LogIn } from 'lucide-react';
 import React, { useTransition } from 'react'
 //import { useRouter } from 'next/navigation';
-import { Loader } from '@/components/ui/loader';
+//import { Loader } from '@/components/ui/loader';
 import { signIn } from "next-auth/react";
 
 
@@ -21,16 +21,10 @@ export const LoginButton = () => {
     };
 
     return (
-        <Button onClick={handleLogin}>
-            
-            {isPending ? (
-                
-                <Loader className='mr-2 h-4 w-4'/>
-            ):(
-                <LogIn className='mr-2 h-4 w-4'/>
-            )}
-            Login
-            
+        <>
+        <Button onClick={handleLogin} className='sm' disabled={isPending}>
+            {isPending ? "Connecting..." : "Connect"}
         </Button>
+        </>
     );
 };
