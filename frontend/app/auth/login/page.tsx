@@ -30,7 +30,7 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        setError("Identifiants invalides. Veuillez réessayer.")
+        setError("Invalid credentials. Please try again.")
         setIsLoading(false)
         return
       }
@@ -38,7 +38,7 @@ export default function LoginPage() {
       router.push("/")
     } catch (error) {
         console.log(error)
-      setError("Une erreur s'est produite. Veuillez réessayer.")
+      setError("An error has occurred. Please try again.")
       setIsLoading(false)
     }
   }
@@ -49,7 +49,7 @@ export default function LoginPage() {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">ScoreAlchemy</CardTitle>
           <CardDescription className="text-center">
-            Connectez-vous à votre compte
+          Log in to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -72,12 +72,12 @@ export default function LoginPage() {
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Mot de passe</Label>
+                <Label htmlFor="password">Password</Label>
                 <Link 
                   href="/auth/reset_password" 
                   className="text-sm text-blue-600 hover:text-blue-800"
                 >
-                  Mot de passe oublié?
+                  Forgot your password?
                 </Link>
               </div>
               <Input
@@ -89,15 +89,15 @@ export default function LoginPage() {
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Connexion en cours..." : "Se connecter"}
+              {isLoading ? "Connecting..." : "Connect"}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
-            Vous n avez pas de compte?{" "}
+            You don&apos;t have an account?{" "}
             <Link href="/auth/register" className="text-blue-600 hover:text-blue-800">
-              Créer un compte
+              Sign Up
             </Link>
           </p>
         </CardFooter>

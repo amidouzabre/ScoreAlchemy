@@ -54,7 +54,7 @@ export default function RegisterPage() {
         } else if (errorData.email) {
           setError(errorData?.email[0])
         } else {
-          setError("Une erreur s'est produite. Veuillez réessayer.")
+          setError("An error has occurred. Please try again.")
         }
       
       //console.log("error", error)
@@ -67,9 +67,9 @@ export default function RegisterPage() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Créer un compte</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
           <CardDescription className="text-center">
-            Inscrivez-vous pour accéder à ScoreAlchemy
+          Sign up to access ScoreAlchemy
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -80,7 +80,7 @@ export default function RegisterPage() {
               </Alert>
             )}
             <div className="space-y-2">
-              <Label htmlFor="username">Nom complet</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
                 type="text"
@@ -102,7 +102,7 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Mot de passe</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -112,7 +112,7 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
+              <Label htmlFor="confirmPassword">Confirm password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -122,15 +122,15 @@ export default function RegisterPage() {
               />
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Création en cours..." : "Créer un compte"}
+              {isLoading ? "Creation in progress...": "Create an account"}
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600">
-            Vous avez déjà un compte?{" "}
+            You already have an account?{" "}
             <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
-              Se connecter
+            Log in
             </Link>
           </p>
         </CardFooter>
