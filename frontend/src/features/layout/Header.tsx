@@ -2,11 +2,11 @@
 
 import { ThemeToggle } from '@/src/theme/ThemeToggle';
 import React from 'react';
+import { useSession, signOut } from "next-auth/react";
+import { Avatar, AvatarImage, AvatarFallback, } from '@/components/ui/avatar';
+import {DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { LoginButton } from './auth/LoginButton';
-import { LogoutButton } from './auth/LogoutButton';
-import {  useSession } from "next-auth/react";
 //import { Button } from '@/components/ui/button';
-
 
 const Header = () => {
     const { data: session } = useSession();
@@ -17,12 +17,26 @@ const Header = () => {
                 <h2 className='text-2xl font-bold mr-auto'>ScoreAlchemy</h2>
                 {session?.user ? (
                 <>
-                    <p className='text-sky-600'>{session?.user?.username}</p>
-                    <LogoutButton />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Avatar>
+                                <AvatarImage src={session.user.avatar} alt="User Avatar" />
+                                <AvatarFallback>{session.user.username.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem>
+                                <p className='text-sky-600'>{session.user.username}</p>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onSelect={() => signOut()}>
+                                Logout
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </>
                 )
                     : (
-                    <LoginButton />
+                    <LoginButton/>
                     )
                 }
                 <ThemeToggle/>
