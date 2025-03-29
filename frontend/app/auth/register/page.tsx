@@ -1,5 +1,6 @@
 "use client"
 
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -8,10 +9,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { signUp, SignUpData } from "@/utils/api"
+
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -31,12 +34,28 @@ export default function RegisterPage() {
 
     try {
       // Ici, vous implémenteriez la logique pour créer un compte
-      // Pour l'exemple, nous simulons juste un succès après un délai
-      setTimeout(() => {
-        router.push("/auth/login?registered=true")
-      }, 1500)
+      const userData: SignUpData = {
+        username,
+        email,
+        password,
+      }
+
+      const result = await signUp(userData)
+
+      console.log("res", result)
+
+      
+      if ('error' in result) {
+        setError("Identifiants invalides. Veuillez réessayer.")
+        setIsLoading(false)
+        return
+      }
+      
+      router.push("/auth/login")
+      //router.push("/auth/login?registered=true")
+      
     } catch (error) {
-        console.log(error)
+      console.log(error)
       setError("Une erreur s'est produite. Veuillez réessayer.")
       setIsLoading(false)
     }
@@ -59,13 +78,13 @@ export default function RegisterPage() {
               </Alert>
             )}
             <div className="space-y-2">
-              <Label htmlFor="name">Nom complet</Label>
+              <Label htmlFor="username">Nom complet</Label>
               <Input
-                id="name"
+                id="username"
                 type="text"
                 placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
