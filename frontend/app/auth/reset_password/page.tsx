@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { resetPassword } from "@/utils/api"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -21,11 +22,11 @@ export default function ForgotPasswordPage() {
 
     try {
       // Ici, vous implémenteriez la logique pour envoyer un email de réinitialisation
-      // Pour l'exemple, nous simulons juste un succès après un délai
-      setTimeout(() => {
-        setIsSubmitted(true)
-        setIsLoading(false)
-      }, 1500)
+      resetPassword(email)
+      
+      setIsLoading(false)
+      setIsSubmitted(true)
+
     } catch (error) {
         console.log(error)
       setError("An error has occurred. Please try again.")

@@ -47,7 +47,7 @@ export default function RegisterPage() {
     } catch (error) {
 
       const errorData = (error as { error: ApiErrorData }).error
-        console.log("errorData", errorData)
+      console.log("errorData", errorData)
         
         if(errorData.username){
           setError(errorData?.username[0]);

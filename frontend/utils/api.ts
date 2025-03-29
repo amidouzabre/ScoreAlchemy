@@ -6,6 +6,9 @@ export interface ApiErrorData {
   username?: string[];
   email?: string[];
   password?: string[];
+  token?: string[];
+  new_password?: string[];
+  uid?: string[];
   non_field_errors?: string[];
   [key: string]: string[] | undefined;
 }
