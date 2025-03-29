@@ -1,78 +1,112 @@
 // utils/api.ts
 
+// --- Types and Interfaces ---
+
+export interface ApiErrorData {
+  username?: string[];
+  email?: string[];
+  password?: string[];
+  non_field_errors?: string[];
+  [key: string]: string[] | undefined;
+}
+
 export interface SignUpData {
-    username: string;
-    email: string;
-    password: string;
-    //re_password: string;
-  }
-  
-export async function signUp(data: SignUpData): Promise<{username: string, email: string, password: string }> {
-    const res = await fetch("http://localhost:8000/auth/users/", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-    const responseData = await res.json();
-    if (!res.ok) {
-      throw new Error(responseData.detail || "Erreur lors de la création du compte");
-    }
-    return responseData;
-  }
-  
-  
-  
-export async function getCurrentUser(token: string): Promise<{ id: string; email: string }> {
-    const res = await fetch("http://localhost:8000/auth/users/me/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
-    });
-    const responseData = await res.json();
-    if (!res.ok) {
-      throw new Error(responseData.detail || "Erreur lors de la récupération des informations utilisateur");
-    }
-    return responseData;
-  }
+  username?: string;
+  email?: string;
+  password?: string;
+  // If needed, error information could be handled separately rather than embedded here.
+}
 
+export interface User {
+  username: string;
+  email: string;
+  password: string;
+}
 
-// Demander l'envoi de l'email de réinitialisation
-export async function resetPassword(email: string): Promise<void>  {
-  fetch("http://localhost:8000/auth/users/reset_password/", {
+export interface CurrentUser {
+  id: string;
+  email: string;
+}
+
+// --- Helper Function ---
+
+const BASE_URL = "http://localhost:8000/auth/users";
+
+async function apiCall<T>(url: string, options: RequestInit): Promise<T> {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  if (!response.ok) {
+    throw { error: data } as T;
+    // Throwing error ensures that all functions report errors in the same way.
+    //throw new Error(data || "An error occurred while processing your request.");
+  }
+  return data;
+}
+
+// --- API Functions ---
+
+/**
+ * Sign up a new user.
+ * @param data - User data for signup.
+ * @returns A promise resolving with user details.
+ */
+export async function signUp(data: SignUpData): Promise<User> {
+  return await apiCall<User>(`${BASE_URL}/`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email }) 
-  })
- 
+    body: JSON.stringify(data),
+  });
+}
 
-};
+/**
+ * Get the current user's details.
+ * @param token - The authentication token.
+ * @returns A promise resolving with the current user's details.
+ */
+export async function getCurrentUser(token: string): Promise<CurrentUser> {
+  return await apiCall<CurrentUser>(`${BASE_URL}/me/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+  });
+}
 
-// Confirmer le changement de mot de passe avec le token et l'uid envoyés par email
-export async function resetPasswordConfirm (
+/**
+ * Request a password reset email.
+ * @param email - The email address of the user.
+ */
+export async function resetPassword(email: string): Promise<void> {
+  await apiCall<void>(`${BASE_URL}/reset_password/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+}
+
+/**
+ * Confirm the password reset with new credentials.
+ * @param new_password - The new password.
+ * @param re_new_password - Confirmation of the new password.
+ * @param token - The password reset token.
+ * @param uid - The user's unique identifier.
+ */
+export async function resetPasswordConfirm(
   new_password: string,
   re_new_password: string,
   token: string,
   uid: string
-): Promise<void>  {
-
-  const res = await fetch("http://localhost:8000/auth/users/reset_password_confirm/", {
+): Promise<void> {
+  await apiCall<void>(`${BASE_URL}/reset_password_confirm/`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ uid, token, new_password, re_new_password })
-  })
-  const responseData = await res.json();
-  if (!res.ok) {
-    throw new Error(responseData.detail || "Erreur lors de la récupération des informations utilisateur");
-  }
-  return responseData;
-};
-
-  
+    body: JSON.stringify({ uid, token, new_password, re_new_password }),
+  });
+}

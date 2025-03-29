@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { signUp, SignUpData } from "@/utils/api"
+import { ApiErrorData, signUp, SignUpData } from "@/utils/api"
 
 
 export default function RegisterPage() {
@@ -40,23 +40,25 @@ export default function RegisterPage() {
         password,
       }
 
-      const result = await signUp(userData)
-
-      console.log("res", result)
-
-      
-      if ('error' in result) {
-        setError("Identifiants invalides. Veuillez réessayer.")
-        setIsLoading(false)
-        return
-      }
-      
+      await signUp(userData)
       router.push("/auth/login")
       //router.push("/auth/login?registered=true")
       
     } catch (error) {
-      console.log(error)
-      setError("Une erreur s'est produite. Veuillez réessayer.")
+
+      const errorData = (error as { error: ApiErrorData }).error
+        console.log("errorData", errorData)
+        
+        if(errorData.username){
+          setError(errorData?.username[0]);
+        } else if (errorData.email) {
+          setError(errorData?.email[0])
+        } else {
+          setError("Une erreur s'est produite. Veuillez réessayer.")
+        }
+      
+      //console.log("error", error)
+      
       setIsLoading(false)
     }
   }
