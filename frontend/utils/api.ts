@@ -1,7 +1,6 @@
 // utils/api.ts
-
 // --- Types and Interfaces ---
-
+import { SignUpData, User, CurrentUser } from "@@/types";
 export interface ApiErrorData {
   username?: string[];
   email?: string[];
@@ -13,23 +12,7 @@ export interface ApiErrorData {
   [key: string]: string[] | undefined;
 }
 
-export interface SignUpData {
-  username?: string;
-  email?: string;
-  password?: string;
-  // If needed, error information could be handled separately rather than embedded here.
-}
 
-export interface User {
-  username: string;
-  email: string;
-  password: string;
-}
-
-export interface CurrentUser {
-  id: string;
-  email: string;
-}
 
 // --- Helper Function ---
 
