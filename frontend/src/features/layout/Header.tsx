@@ -30,10 +30,12 @@ const Header = () => {
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
-                            <DropdownMenuItem>
-                                <p className='text-sky-600'>{session.user.username}</p>
+                            <DropdownMenuItem  className='cursor-pointer'>
+                                <Link href='/profile'>
+                                    Profile    
+                                </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem onSelect={() => signOut()}>
+                            <DropdownMenuItem className='cursor-pointer' onSelect={() => signOut()}>
                                 Logout
                             </DropdownMenuItem>
                         </DropdownMenuContent>
