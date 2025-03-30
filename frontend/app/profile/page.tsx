@@ -1,8 +1,12 @@
+"use client"
 import React from 'react'
-
-export default function Profile() {
+import { withAuth } from "@/utils/withAuth"
+ 
+function Profile() {
   return (
     <div>Profile</div>
   )
 }
+
+export default withAuth(Profile)
 
