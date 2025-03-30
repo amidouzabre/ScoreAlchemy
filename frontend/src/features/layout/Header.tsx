@@ -24,7 +24,7 @@ const Header = () => {
                 <>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
-                            <Avatar>
+                            <Avatar className='cursor-pointer'>
                                 <AvatarImage src={session.user.avatar} alt="User Avatar" />
                                 <AvatarFallback>{session.user.username.charAt(0)}</AvatarFallback>
                             </Avatar>

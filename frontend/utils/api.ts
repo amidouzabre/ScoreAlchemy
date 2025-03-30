@@ -51,13 +51,14 @@ export async function signUp(data: SignUpData): Promise<User> {
  * @param token - The authentication token.
  * @returns A promise resolving with the current user's details.
  */
-export async function getCurrentUser(token: string): Promise<CurrentUser> {
+export async function getCurrentUser(email:string, token: string): Promise<CurrentUser> {
   return await apiCall<CurrentUser>(`${BASE_URL}/me/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`,
     },
+    body: JSON.stringify({ email }),
   });
 }
 
