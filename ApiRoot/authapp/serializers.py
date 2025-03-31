@@ -7,12 +7,12 @@ from .models import User
 class CustomUserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User #new
-        fields = ('id', 'email', 'password', 'username', 'firstname', 'lastname',)
+        fields = ('id', 'email', 'password', 'username', 'firstname', 'lastname', )
 
 class CustomUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = User #new
-        fields = ('id', 'email', 'username', 'firstname', 'lastname','avatar')
+        fields = ('id', 'email', 'username', 'firstname', 'lastname','avatar', 'is_active', 'is_superuser', 'is_staff')
 
 
 
