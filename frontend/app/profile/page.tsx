@@ -11,6 +11,7 @@ import { updateUser } from "@/utils/api"; // Import updateUser function
 
 function Profile() {
   const { data: session } = useSession();
+  
   const [firstname, setFirstname] = useState(session?.user?.firstname);
   const [lastname, setLastname] = useState(session?.user?.lastname);
   const [avatar, setAvatar] = useState(session?.user?.avatar);
