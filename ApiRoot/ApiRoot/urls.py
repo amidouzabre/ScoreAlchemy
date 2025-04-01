@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from rest_framework_simplejwt.views import TokenObtainPairView
-from authapp.views import LogoutView, CustomTokenObtainPairView
+from authapp.views import LogoutView, CustomTokenObtainPairView, UpdateUserView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +31,8 @@ urlpatterns = [
 
     # Alias /auth/login/ to your token obtain view
     path('auth/login/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+
+    path("profile/update/", UpdateUserView.as_view(), name="update_user"),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

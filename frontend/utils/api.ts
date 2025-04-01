@@ -16,7 +16,7 @@ export interface ApiErrorData {
 
 // --- Helper Function ---
 
-const BASE_URL = "http://localhost:8000/auth/users";
+const BASE_URL = "http://localhost:8000";
 
 async function apiCall<T>(url: string, options: RequestInit): Promise<T> {
   const response = await fetch(url, options);
@@ -37,7 +37,7 @@ async function apiCall<T>(url: string, options: RequestInit): Promise<T> {
  * @returns A promise resolving with user details.
  */
 export async function signUp(data: SignUpData): Promise<User> {
-  return await apiCall<User>(`${BASE_URL}/`, {
+  return await apiCall<User>(`${BASE_URL}/auth/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export async function signUp(data: SignUpData): Promise<User> {
  * @returns A promise resolving with the current user's details.
  */
 export async function getCurrentUser(email:string, token: string): Promise<CurrentUser> {
-  return await apiCall<CurrentUser>(`${BASE_URL}/me/`, {
+  return await apiCall<CurrentUser>(`${BASE_URL}/auth/users/me/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export async function getCurrentUser(email:string, token: string): Promise<Curre
  * @param email - The email address of the user.
  */
 export async function resetPassword(email: string): Promise<void> {
-  await apiCall<void>(`${BASE_URL}/reset_password/`, {
+  await apiCall<void>(`${BASE_URL}/auth/users/reset_password/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export async function resetPasswordConfirm(
   token: string,
   uid: string
 ): Promise<void> {
-  await apiCall<void>(`${BASE_URL}/reset_password_confirm/`, {
+  await apiCall<void>(`${BASE_URL}/auth/users/reset_password_confirm/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -97,3 +97,58 @@ export async function resetPasswordConfirm(
     body: JSON.stringify({ uid, token, new_password, re_new_password }),
   });
 }
+
+
+
+
+export async function updateUser(
+  token: string,
+  data: {
+    id: string;
+    username?: string;
+    email?: string;
+    firstname?: string;
+    lastname?: string;
+    avatar?: File;
+  }
+): Promise<User> {
+  const formData = new FormData();
+  formData.append('id', data.id);
+  if (data.username) formData.append('username', data.username);
+  if (data.email) formData.append('email', data.email);
+  if (data.firstname) formData.append('firstname', data.firstname);
+  if (data.lastname) formData.append('lastname', data.lastname);
+  if (data.avatar) formData.append('avatar', data.avatar);
+
+  return await apiCall<User>(`${BASE_URL}/profile/update/`, {
+    method: "PUT",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+    },
+    body: formData,
+  });
+}
+
+/*
+export async function updateUser(
+  token: string,
+  data: {
+    username?: string;
+    email?: string;
+    password?: string;
+    new_password?: string;
+    firstname?: string;
+    lastname?: string;
+    avatar?: string;
+  }
+): Promise<User> {
+  return await apiCall<User>(`${BASE_URL}/profile/update/`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+}
+  */
