@@ -1,16 +1,37 @@
 "use client";
 
 import { ThemeToggle } from '@/src/theme/ThemeToggle';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useSession, signOut } from "next-auth/react";
 import { Avatar, AvatarImage, AvatarFallback, } from '@/components/ui/avatar';
 import {DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { LoginButton } from './auth/LoginButton';
 import Link from 'next/link';
-//import { Button } from '@/components/ui/button';
+import { getCurrentUser } from '@/utils/api'
+
 
 const Header = () => {
     const { data: session } = useSession();
+    const [avatar, setAvatar] = useState('');
+    const [username, setUsername] = useState('');
+    //const [user, setUser] = useState("")
+
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            if (session?.user?.access) {
+                try {
+                    const currentUser = await getCurrentUser(session.user.access);
+                    //setUser(currentUser);
+                    setAvatar(`http://localhost:8000/${currentUser.avatar}` || '');
+                    setUsername(currentUser.username || '');
+                } catch (error) {
+                    console.error("Error fetching current user:", error);
+                }
+            }
+        };
+        fetchCurrentUser();
+    }, [session])  
+
     console.log({session});
     return (
         <header className='borde-b border-b-accent fixed top-0 bg-background w-full'>
@@ -25,8 +46,8 @@ const Header = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Avatar className='cursor-pointer'>
-                                <AvatarImage src={session.user.avatar} alt="User Avatar" />
-                                <AvatarFallback>{session.user.username.charAt(0)}</AvatarFallback>
+                            <AvatarImage src={avatar} alt="User Avatar" />
+                                <AvatarFallback>{username.charAt(0)}</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>

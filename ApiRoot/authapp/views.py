@@ -47,6 +47,11 @@ class CustomUserAPIView(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def put(self, request, *args, **kwargs):
         user = request.user
 
@@ -56,6 +61,8 @@ class CustomUserAPIView(APIView):
                 {"detail": "Vous n'êtes pas autorisé à modifier cet utilisateur."},
                 status=status.HTTP_403_FORBIDDEN
             )
+        
+        
 
         # Mise à jour partielle de l'utilisateur (certaines données peuvent être omises)
         serializer = CustomUserSerializer(user, data=request.data, partial=True)

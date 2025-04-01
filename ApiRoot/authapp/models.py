@@ -1,5 +1,5 @@
 import uuid
-
+import os
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
@@ -61,3 +61,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         """Return True if the user has permissions for the given app."""
         return self.is_superuser
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_avatar = User.objects.get(pk=self.pk).avatar
+            if old_avatar and old_avatar != self.avatar:
+                old_avatar_path = os.path.join(settings.MEDIA_ROOT, old_avatar.name)
+                if os.path.exists(old_avatar_path):
+                    os.remove(old_avatar_path)
+        super().save(*args, **kwargs)

@@ -1,6 +1,6 @@
 // utils/api.ts
 // --- Types and Interfaces ---
-import { SignUpData, User, CurrentUser } from "@@/types";
+import { SignUpData, User } from "@@/types";
 export interface ApiErrorData {
   username?: string[];
   email?: string[];
@@ -46,21 +46,7 @@ export async function signUp(data: SignUpData): Promise<User> {
   });
 }
 
-/**
- * Get the current user's details.
- * @param token - The authentication token.
- * @returns A promise resolving with the current user's details.
- */
-export async function getCurrentUser(email:string, token: string): Promise<CurrentUser> {
-  return await apiCall<CurrentUser>(`${BASE_URL}/auth/users/me/`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
-    },
-    body: JSON.stringify({ email }),
-  });
-}
+
 
 /**
  * Request a password reset email.
@@ -129,26 +115,16 @@ export async function updateUser(
   });
 }
 
-/*
-export async function updateUser(
-  token: string,
-  data: {
-    username?: string;
-    email?: string;
-    password?: string;
-    new_password?: string;
-    firstname?: string;
-    lastname?: string;
-    avatar?: string;
-  }
-): Promise<User> {
+/**
+ * 
+ * @param { string } token
+ * @returns {User} user
+ */
+export async function getCurrentUser(token: string): Promise<User> {
   return await apiCall<User>(`${BASE_URL}/profile/update/`, {
-    method: "PUT",
+    method: "GET",
     headers: {
-      "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`,
     },
-    body: JSON.stringify(data),
-  })
+  });
 }
-  */

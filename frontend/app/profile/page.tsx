@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 //import { withAuth } from "@/utils/withAuth";
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -7,50 +7,83 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { updateUser } from "@/utils/api"; // Import updateUser function
+import { updateUser, getCurrentUser } from "@/utils/api"; // Import updateUser function
 
 function Profile() {
-  const { data: session } = useSession();
-  
-  const [firstname, setFirstname] = useState(session?.user?.firstname);
-  const [lastname, setLastname] = useState(session?.user?.lastname);
-  const [avatar, setAvatar] = useState(session?.user?.avatar);
+  const { data: session, update } = useSession();
+
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [avatar, setAvatar] = useState('');
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
-const handleUpdateProfile = async () => {
-  try {
-    const token = session?.user?.access; // Ensure token is retrieved correctly
-    if (!token) {
-      console.error("No token found");
-      return;
-    }
-    console.log("token", token);
-    const updateData = {
-      id: session?.user?.id,
-      email: session?.user?.email,
-      username: session?.user?.username,
-      firstname,
-      lastname,
-      avatar: avatarFile ? avatarFile.name : avatar, // Use file name or existing avatar URL
+  // Fetch current user data and set state
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      if (session?.user?.access) {
+        try {
+          const currentUser = await getCurrentUser(session.user.access);
+          console.log("Current user:", currentUser);
+          setFirstname(currentUser.firstname || '');
+          setLastname(currentUser.lastname || '');
+          setAvatar(`http://localhost:8000/${currentUser.avatar}` || '');
+        } catch (error) {
+          console.error("Error fetching current user:", error);
+        }
+      }
     };
 
-    console.log("Profile data:", updateData);
+    fetchCurrentUser();
+  }, [session]);
 
-    const updatedUser = await updateUser(token, {
-      id: session?.user?.id,
-      username: session?.user?.username,
-      email: session?.user?.email,
-      firstname: firstname || undefined,
-      lastname: lastname || undefined,
-      avatar: avatarFile || undefined,
-    });
-    console.log("Profile updated:", updatedUser);
-  } catch (error) {
-    console.error("Error updating profile:", error);
-  }
-};
+  const handleUpdateProfile = async () => {
+    try {
+      const token = session?.user?.access; // Ensure token is retrieved correctly
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+      console.log("token", token);
+      const updateData = {
+        id: session?.user?.id,
+        email: session?.user?.email,
+        username: session?.user?.username,
+        firstname,
+        lastname,
+        avatar: avatarFile ? avatarFile.name : avatar, // Use file name or existing avatar URL
+      };
 
-// ... existing code ...
+      console.log("Profile data:", updateData);
+
+      const updatedUser = await updateUser(token, {
+        id: session?.user?.id,
+        username: session?.user?.username,
+        email: session?.user?.email,
+        firstname: firstname || undefined,
+        lastname: lastname || undefined,
+        avatar: avatarFile || undefined,
+      });
+
+      // Update session data with the new user information
+      if (update && session?.user) {
+        await update({
+          user: {
+            ...session.user,
+            firstname: updatedUser?.firstname,
+            lastname: updatedUser?.lastname,
+            avatar: updatedUser?.avatar,
+          },
+        });
+      }
+
+      console.log("Profile updated:", updatedUser);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
+  };
+
+  // ... existing code ...
+
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,6 +92,9 @@ const handleUpdateProfile = async () => {
       setAvatar(URL.createObjectURL(file)); // Preview the selected avatar
     }
   };
+
+ 
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
