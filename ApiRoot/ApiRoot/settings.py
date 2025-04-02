@@ -48,6 +48,16 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt", #new
     "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
+
+    # Apps 
+    "analytics",
+    "coaches",
+    "competitions",
+    "locations",
+    "matches",
+    "players",
+    "predictions",
+    "teams",
 ]
 
 
