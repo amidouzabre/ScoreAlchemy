@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "djoser",
     "rest_framework_simplejwt", #new
-    #"rest_framework_simplejwt.token_blacklist",
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
 ]
 
