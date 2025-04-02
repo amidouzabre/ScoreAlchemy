@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { resetPassword } from "@/utils/api"
 
 export default function ForgotPasswordPage() {
+  const { data: session } = useSession();
   const [email, setEmail] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState("")
@@ -26,6 +28,9 @@ export default function ForgotPasswordPage() {
       
       setIsLoading(false)
       setIsSubmitted(true)
+      if (session){
+        signOut();
+      }
 
     } catch (error) {
         //console.log(error)
@@ -82,11 +87,13 @@ export default function ForgotPasswordPage() {
             </form>
           )}
         </CardContent>
+        { !session &&
         <CardFooter className="flex justify-center">
           <Link href="/auth/login" className="text-sm text-blue-600 hover:text-blue-800">
            Return to login
           </Link>
         </CardFooter>
+        }
       </Card>
     </div>
   )
