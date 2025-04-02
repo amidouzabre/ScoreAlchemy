@@ -8,10 +8,17 @@ export interface SignUpData {
   export interface User {
     username: string;
     email: string;
+    lastname?: string;
+    firstname?: string;
     password: string;
+    avatar?: string;
   }
   
   export interface CurrentUser {
     id: string;
     email: string;
+    avatar?: string;
+    username: string;
+    lastname?: string;
+    firstname?: string;
   }
