@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 //import { withAuth } from "@/utils/withAuth";
 import Link from "next/link"
 import { useSession } from 'next-auth/react';
+import { useRouter } from "next/navigation"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { updateUser, getCurrentUser } from "@/utils/api"; // Import updateUser function
 
 function Profile() {
-  const { data: session, update } = useSession();
-
+  const { data: session, update, status } = useSession();
+  const router = useRouter()
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [avatar, setAvatar] = useState('');
@@ -21,6 +22,11 @@ function Profile() {
   // Fetch current user data and set state
   useEffect(() => {
     const fetchCurrentUser = async () => {
+
+      if (status === "unauthenticated") {
+        router.push("/auth/login")
+      }
+
       if (session?.user?.access) {
         try {
           const currentUser = await getCurrentUser(session.user.access);
@@ -35,7 +41,7 @@ function Profile() {
     };
 
     fetchCurrentUser();
-  }, [session]);
+  }, [session, router, status]);
 
   const handleUpdateProfile = async () => {
     try {
