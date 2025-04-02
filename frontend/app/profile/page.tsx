@@ -1,12 +1,13 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 //import { withAuth } from "@/utils/withAuth";
+import Link from "next/link"
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { updateUser, getCurrentUser } from "@/utils/api"; // Import updateUser function
 
 function Profile() {
@@ -97,7 +98,7 @@ function Profile() {
   
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">Profile</CardTitle>
@@ -144,6 +145,14 @@ function Profile() {
             Update Profile
           </Button>
         </CardContent>
+        <CardFooter className="flex justify-center">
+          <Link 
+            href="/auth/reset_password" 
+            className="text-sm text-blue-600 hover:text-blue-800"
+          >
+            Reset Password
+          </Link>
+        </CardFooter>
       </Card>
     </div>
   );
