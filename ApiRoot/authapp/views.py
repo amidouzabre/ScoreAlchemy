@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -57,6 +57,40 @@ class CustomUserAPIView(APIView):
                 {"detail": "Vous n'êtes pas autorisé à modifier cet utilisateur."},
                 status=status.HTTP_403_FORBIDDEN
             )
+
+
+        print(f"Requse data : {request.data}")
+        # Check if this is a password change request
+        current_password = request.data.get("password")
+        new_password = request.data.get("new_password")
+
+        print(f"User: {user.email}")
+
+        print(f"Auht? : {authenticate(username=user.email, password=current_password)}")
+
+        print(f"password: {current_password} and newPassword: {new_password}")
+        if current_password and new_password:
+            if not authenticate(username=user.email, password=current_password):
+                return Response({
+                    "detail": "Current password is incorrect."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Set new password
+            user.set_password(new_password)
+            user.save()
+
+            # Blacklist all tokens for this user for security
+            token = RefreshToken.for_user(user)
+            token.blacklist()
+
+            return Response({
+                "detail": "Password changed successfully. Please lon in again."
+            },
+            status=status.HTTP_200_OK
+            )
+
 
         # Mise à jour partielle de l'utilisateur.
         serializer = CustomUserSerializer(user, data=request.data, partial=True)

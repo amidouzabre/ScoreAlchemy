@@ -66,7 +66,7 @@ function Profile() {
       });
 
       // Update session data with the new user information
-      if (update && session?.user) {
+      if (updatedUser && session?.user) {
         await update({
           user: {
             ...session.user,
@@ -147,10 +147,10 @@ function Profile() {
         </CardContent>
         <CardFooter className="flex justify-center">
           <Link 
-            href="/auth/reset_password" 
+            href="/auth/change_password" 
             className="text-sm text-blue-600 hover:text-blue-800"
           >
-            Reset Password
+            Change Password
           </Link>
         </CardFooter>
       </Card>

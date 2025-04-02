@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -23,14 +23,17 @@ export default function ForgotPasswordPage() {
     setError("")
 
     try {
+
+      
       // Ici, vous implémenteriez la logique pour envoyer un email de réinitialisation
       await resetPassword(email)
-      
+
+    
       setIsLoading(false)
       setIsSubmitted(true)
-      if (session){
-        signOut();
-      }
+
+      
+      
 
     } catch (error) {
         //console.log(error)
@@ -48,7 +51,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Forgot your password?</CardTitle>

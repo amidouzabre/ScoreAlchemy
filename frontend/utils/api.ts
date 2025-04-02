@@ -96,6 +96,8 @@ export async function updateUser(
     firstname?: string;
     lastname?: string;
     avatar?: File;
+    password?: string;
+    new_password?:string
   }
 ): Promise<User> {
   const formData = new FormData();
@@ -105,6 +107,8 @@ export async function updateUser(
   if (data.firstname) formData.append('firstname', data.firstname);
   if (data.lastname) formData.append('lastname', data.lastname);
   if (data.avatar) formData.append('avatar', data.avatar);
+  if (data.password) formData.append('password', data.password);
+  if (data.new_password) formData.append('new_password', data.new_password);
 
   return await apiCall<User>(`${BASE_URL}/profile/update/`, {
     method: "PUT",
