@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     # Apps 
     "analytics",
     "coaches",
-    "competitions",
+    "leagues",
     "locations",
     "matches",
     "players",
