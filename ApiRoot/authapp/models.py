@@ -1,8 +1,10 @@
 import uuid
 import os
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
+
 
 # Create your models here.
 class CustomUserManager(UserManager):
@@ -31,7 +33,7 @@ class CustomUserManager(UserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
-    username = models.CharField(unique=True, max_length=255, blank=True, null=True)
+    username = models.CharField(unique=True, max_length=255)
     firstname = models.CharField(max_length=30, blank=True)
     lastname = models.CharField(max_length=30, blank=True)
     avatar = models.ImageField(upload_to='uploads/avatars', blank=True, null=True)
@@ -62,11 +64,25 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return True if the user has permissions for the given app."""
         return self.is_superuser
 
+
+    #def save(self, *args, **kwargs):
+    #    if self.pk:
+    #        old_avatar = User.objects.get(pk=self.pk).avatar
+    #        if old_avatar and old_avatar != self.avatar:
+    #            old_avatar_path = os.path.join(settings.MEDIA_ROOT, old_avatar.name)
+    #            if os.path.exists(old_avatar_path):
+    #                os.remove(old_avatar_path)
+    #    super().save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
-        if self.pk:
-            old_avatar = User.objects.get(pk=self.pk).avatar
-            if old_avatar and old_avatar != self.avatar:
-                old_avatar_path = os.path.join(settings.MEDIA_ROOT, old_avatar.name)
-                if os.path.exists(old_avatar_path):
-                    os.remove(old_avatar_path)
-        super().save(*args, **kwargs)
+        if self.pk:  # Vérifie si une clé primaire existe (ce qui indique que l'utilisateur a été créé)
+            try:
+                old_avatar = User.objects.get(pk=self.pk).avatar
+                if old_avatar and old_avatar != self.avatar:
+                    old_avatar_path = os.path.join(settings.MEDIA_ROOT, old_avatar.name)
+                    if os.path.exists(old_avatar_path):
+                        os.remove(old_avatar_path)
+            except ObjectDoesNotExist:
+                # Si l'utilisateur n'existe pas encore, ignorez cette partie
+                pass
+        super().save(*args, **kwargs)  # Appelle la méthode save de la classe parent
