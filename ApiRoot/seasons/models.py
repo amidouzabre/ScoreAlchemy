@@ -3,7 +3,7 @@ from competitions.models import Tournament
 
 # Create your models here.
 class Season(models.Model):
-    name = models.CharField(max_length=20)  # ex: 2024-2025
+    name = models.CharField(max_length=100)  # ex: 2024-2025
     season_num = models.IntegerField()  # ex: 130
     description = models.TextField(blank=True, null=True)
     start_date = models.DateField()
