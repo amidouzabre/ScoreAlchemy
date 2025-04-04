@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "sports",
     "federations",
     "competitions",
+    "clubs",
     "coaches",
     "locations",
     "matches",
