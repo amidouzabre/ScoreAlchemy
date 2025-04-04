@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "matches",
     "players",
     "teams",
+    "seasons",
 ]
 
 
