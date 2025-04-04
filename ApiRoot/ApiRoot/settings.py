@@ -50,13 +50,11 @@ INSTALLED_APPS = [
     "corsheaders",
 
     # Apps 
-    "analytics",
+    "sports",
     "coaches",
-    "leagues",
     "locations",
     "matches",
     "players",
-    "predictions",
     "teams",
 ]
 
